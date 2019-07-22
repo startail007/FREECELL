@@ -1,0 +1,414 @@
+@font-face {
+  	font-family: Oleo Script;
+  	src: url(../font/OleoScript-Regular.ttf);
+}
+body{
+	margin:0;
+    background-color: #777;
+	font-family: 'Oleo Script', cursive, sans-serif;
+}
+.mainAPP{
+    position: absolute;
+    display: table;
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+    border-collapse: collapse;
+}
+.mainContent{
+    position: relative;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.card{
+	position: absolute;
+	display: block;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding: 5px;
+	box-sizing: border-box;
+	font-size: 20px;
+	font-weight: bold;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+.card:hover{
+}
+.cardBox{
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	z-index: 1;
+}
+.draggingBox{
+	position: absolute;
+	display: block;
+	z-index: 999;
+	pointer-events: none;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	-webkit-filter: drop-shadow(8px 8px 10px #000); /* Safari */
+	filter: drop-shadow(8px 8px 10px #000);
+	z-index: 2;
+}
+.draggingBox .card{
+	
+}
+.animationBox{
+	position: absolute;
+	display: block;
+	z-index: 999;
+	pointer-events: none;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+}
+.putBox{			
+	position: relative;
+	display: block;     
+	width: 100%;
+	height: 100%;
+}
+.putBox > table{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+	border-collapse:collapse;
+}
+.putBox > table > tbody{
+	position: relative;
+}
+.putBox > table > tbody > tr{
+	position: relative;
+}
+.putBox > table > tbody > tr > td{
+	position: relative;
+}
+.putBox.base{
+}		
+.putBox.free{
+}
+.putBox.sort{
+}
+.put{
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;		
+}
+.putBox.base .put{
+	height: 100%;
+}
+.putBox.free .put{
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: 104% auto;	
+	background-image: url(../img/cardBg.png);
+}
+.putBox.sort .put{
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: 105% auto;	
+	background-image: url(../img/cardBg.png);
+	font-size: 40px;
+	color: #545b61;
+}
+.putBoxFrame{
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	/*padding: 20px;*/
+	box-sizing: border-box;
+}
+.putBoxFrame > table{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	vertical-align: middle;
+	border-collapse:collapse;
+}
+.putBoxFrame > table > tbody{
+	position: relative;
+}
+.putBoxFrame > table > tbody > tr{
+	position: relative;
+}
+.putBoxFrame > table > tbody > tr > td{
+	position: relative;
+}		
+.putBoxTop{
+	height: 50px;
+}
+.putCard{			
+	height: 200px;
+}
+.noSelect{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none; 
+}
+.app{
+	position: relative;
+	display: block;
+	overflow: hidden;
+	background-color: #0a141d;
+	width: 1200px;
+	height: 800px;
+    margin:0 auto;
+}
+.content{
+	position: relative;
+	display: block;
+	/*margin: 0px 100px;*/
+	width: 100%;
+	height: 100%;
+}
+.startBox{
+	position: absolute;
+    display: block;
+    width: 160px;
+    left: 50%;
+    /*bottom: 0px;*/
+    top:100%;
+    margin-left: -80px;
+	text-align: center;
+}
+
+.time{
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+    color: #fff;
+}
+.Diamond{
+	position: relative;
+	display: inline-block;
+	margin: 0 20px;
+}
+.Diamond .icon{
+	position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 40px;
+    max-height: 20px;
+}
+    
+.score{
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+    color: #fff;
+}
+.displayInfo{
+	position: absolute;
+    display: block;
+    width: 100%;
+    top: 0%;
+    left: 0%;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    font-size: 0px;
+}
+.displayInfo .time{		
+	text-align: left;
+	min-width: 120px;
+    font-size: initial;
+}
+.displayInfo .score{
+	text-align: right;
+	min-width: 120px;
+    font-size: initial;
+}
+.title{
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 50px;
+    top: 0px;
+    line-height: 50px;
+    padding: 0px 10px;
+	box-sizing: border-box;
+	z-index: 4;
+}
+.titleText{
+	font-size: 20px;
+	letter-spacing: 0.05em;
+	color: #ffac4e;
+    text-align: left;
+}
+
+.buttons{
+	position: absolute;
+	display: inline-block;
+	right: 0px;
+	top: 0px;
+}
+.button{
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 10px;
+	/*border:1px solid #fff;*/
+	box-sizing: border-box;
+	margin: 0px 5px;
+	text-align: center;   
+	/*font-size: 0;*/
+	cursor: pointer;
+	color: #ffac4e;
+	font-size: 20px;
+	letter-spacing: 0.05em;
+}
+.button.box{	
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+}
+.button:before{
+	content: "";
+	position: absolute;
+	display: block;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	border:1px solid #ffac4e;
+	border-radius: 10px;
+	opacity: 0;
+	transition: opacity .3s;
+}
+.button:hover:before{
+	opacity: 1;
+}
+.button:after{
+	content: "";
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	vertical-align: middle; 
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+.menu{
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: #0a141d;
+	left: 0px;
+	top: 0px;
+	z-index: 3;
+}
+.menu .menuButtons{
+    padding-bottom: 80px;
+}
+.menu .menuButtonsContent{
+    border-bottom: 1px solid #ffac4e;
+    border-radius: 0px 0px 40px 40px;
+}
+.complete{
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: #0a141d;
+	left: 0px;
+	top: 0px;
+	z-index: 3;
+}
+.menuButtons .button{
+	padding: 20px;
+	font-size: 30px;
+	letter-spacing: 0.05em;
+	max-width: 300px;
+}
+.complete .menuButtons{
+    padding-top: 380px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+.complete .menuButtonsContent{
+    border: 1px solid #ffac4e;    
+    border-bottom: 0;
+    border-radius: 40px 40px 0px 0px;
+}
+.complete .score{
+	display: block;
+	font-size: 44px;
+}
+.complete .time{
+	display: block;
+	font-size: 28px;
+	margin-bottom: 20px;
+	line-height: 32px;
+}
+
+.complete .time:before{
+	content: "";
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	background-image: url(../img/Time.svg);
+	margin-right: 5px;
+}
+.complete .button{	
+	display: block;
+	max-width: 300px;
+	margin: 0 auto;
+}
+	
+#button_Back:after{	
+	background-image: url(../img/Back.svg);
+}
+#button_Menu:after{
+	background-image: url(../img/Menu.svg);
+}
+#button_Restart:after{	
+	background-image: url(../img/Restart.svg);
+}
+#button_New:after{
+	background-image: url(../img/New.svg);
+}
+#button_Close:after{
+	background-image: url(../img/Close.svg);
+}
+#button_Close{
+	position: absolute;
+	display: block;
+	right: 10px;
+	top: 10px;
+}
+.menuButtons{
+	position: relative;
+	display: table;
+	width: 100%;
+	height: 100%;
+    box-sizing: border-box;
+}
+.menuButtonsContent{	
+	position: relative;
+	display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}

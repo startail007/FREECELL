@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!--<link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">-->
+	<script src="js/ease.js"></script>
+	<script src="js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/index.css">	
+	<script src="js/index.js"></script>
+	<style>
+		[v-cloak] {
+			display: none;
+		}		
+	</style>
+</head>
+<body>
+	<div class="mainAPP">
+		<div class="mainContent">
+			<div class="app noSelect" id="app" v-cloak>
+				<div class="content">
+					<div class="putBoxFrame">
+						<table>
+							<tbody>
+								<tr class="putBoxTop">
+									<td colspan="2">								
+									</td>
+								</tr>
+								<tr class="putCard">						
+									<td>
+										<div class="putBox free">
+								        	<table>
+								        		<tbody>
+								        			<tr>
+								        				<td v-for="(item,index) in putCard['free']">
+								        					<div ref="collision_free" class="put" :style="{width:cardWidth+'px',height:cardHeight+20+'px'}" :index="index" type="free">&nbsp;</div>
+								        				</td>
+								        			</tr>
+								        		</tbody>
+								        	</table>        	
+								        </div>
+									</td>
+									<td>
+										<div class="putBox sort">
+								        	<table>
+								        		<tbody>
+								        			<tr>
+								        				<td v-for="(item,index) in putCard['sort']">
+								        					<div ref="collision_sort" class="put" :style="{width:cardWidth+'px',height:cardHeight+20+'px',lineHeight:cardHeight+'px'}" :index="index" type="sort">A</div>
+								        				</td>
+								        			</tr>
+								        		</tbody>
+								        	</table>        	
+								        </div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<div class="putBox base" v-if="page===''">
+								        	<table>
+								        		<tbody>
+								        			<tr>
+								        				<td v-for="(item,index) in putCard['base']">
+								        					<div ref="collision_base" class="put" :style="{width:cardWidth+'px'}" :index="index" type="base"></div>
+								        				</td>
+								        			</tr>
+								        		</tbody>
+								        	</table> 
+								        </div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="startBox">
+							<div class="put" ref="startPut" :style="{width:cardWidth+'px',height:cardHeight+'px'}" type="start"></div>
+						</div>
+					</div>  
+		        </div>  
+		        <div class="cardBox" @mousedown="mousedown" v-if="page===''">
+		        	<template v-for="(putCardType,type) in putCard">
+		        		<template v-for="(putCardChild,index) in putCardType">
+		        			<template v-for="(cardNum,order) in putCardChild">
+		        				<div class="card" :class=[type[cards[cardNum].type].icon] :key="cards[cardNum].type+'_'+cards[cardNum].num" :style="cardStyle(cards[cardNum],type,index,order)" @mousedown="function(e){card_mousedown(e,cards[cardNum],type,index,order)}" v-if="!cards[cardNum].dragging">
+								</div>
+		        			</template>
+		        		</template>
+		        	</template>
+		        	<!--<div class="card" :class=[type[item.type].icon] v-for="(item) in cards" :key="item.type+'_'+item.num" :style="cardStyle(item)" @mousedown="function(e){card_mousedown(e,item)}" v-if="!item.dragging">
+					</div>-->
+		        </div>
+		        <div class="draggingBox" v-if="dragStartBool">
+		        	<div class="card" :class=[type[item.type].icon] v-for="(item,index) in dragTargetArray" :key="item.type+'_'+item.num" :style="cardDragStyle(item,index)">
+			        </div>
+		        </div>
+		        <div class="complete" v-if="page==='complete'">
+		        	<div class="menuButtons">
+		        		<div class="menuButtonsContent">
+		        			<div class="score">{{score}}</div>
+		        			<div class="time">{{showTime}}</div>
+			        		<div class="button" @click="restart_click" id="button_Restart" title="重玩">
+				        		Restart this game
+				        	</div>
+				        	<div class="button" @click="new_click" id="button_New" title="開啟新局">
+				        		Start a new game
+				        	</div>
+				        </div>
+		        	</div>
+		        </div>
+		        <div class="menu" v-if="page==='menu'">
+		        	<div class="menuButtons">
+		        		<div class="menuButtonsContent">
+			        		<div class="button" @click="restart_click" id="button_Restart" title="重玩">
+				        		Restart this game
+				        	</div>
+				        	<div class="button" @click="new_click" id="button_New" title="開啟新局">
+				        		Start a new game
+				        	</div>
+				        </div>
+		        	</div>
+		        </div>
+		        <div class="title">
+		        	<div class="titleText">Freecell</div>
+		        	<div class="displayInfo" v-if="startGame">
+						<div class="score">{{score}}</div>
+						<div class="Diamond">
+							<img class="icon" src="img/Diamond.svg" />
+						</div>
+						<div class="time">{{showTime}}</div>
+					</div>
+		        	<div class="buttons" v-if="startGame">
+			        	<div class="button box" v-if="page===''" @click="back_click" id="button_Back" title="上一步"></div>
+			        	<div class="button box" v-if="page===''" @click="menu_click" id="button_Menu" title="選單"></div>
+		        		<div class="button box" v-if="page==='menu'" @click="close_click" id="button_Close" title="關閉"></div>
+			        </div>
+		        </div>      
+			</div>
+		</div>
+	</div>
+</body>
+</html>
