@@ -40,7 +40,7 @@ window.onload = function() {
         	cardHeight:180,
         	autoId:0,
         	autoBool:false,
-        	startGame:false,
+        	transitions:false,
         	dragType:"",        	
         	dragIndex:-1,        	
         	dragOrder:-1,
@@ -48,6 +48,7 @@ window.onload = function() {
         	stepCount:0,
         	stepScore:[],
         	time:0,
+        	timeBool:false,
         	combo:0,
         	pause:false,
         	page:"",
@@ -91,6 +92,7 @@ window.onload = function() {
         	/*this.random.sort(function(a,b){
         		return b-a;
         	});*/
+	        this.startAnimation();
         	this.init();
         	//this.page = "complete";
         },
@@ -107,10 +109,10 @@ window.onload = function() {
 	        	this.dragStartBool = false;
 	        	this.draggingBool = false;
 	        	this.dragStartTime = 0;
-	        	this.currentlyTime = 0;	        	
+	        	this.currentlyTime = Date.now();        	
 	        	this.dragTargetArray = [];
 	        	this.autoBool = false;
-	        	this.startGame = false;
+	        	this.transitions = true;
 	        	this.dragType = "";        	
 	        	this.dragIndex = -1;        	
 	        	this.dragOrder = -1;
@@ -118,6 +120,7 @@ window.onload = function() {
 	        	this.stepCount = 0;
 	        	this.stepScore = [];
 	        	this.time = 0;
+	        	this.timeBool = false;
 	        	this.combo = 0;
 	        	this.pause = false;
 	        	this.page = "";
@@ -158,10 +161,10 @@ window.onload = function() {
 	        	}
 
 	        	clearTimeout(this.autoId);
-	        	this.startAnimation();
 	        	this.autoId = setTimeout(function(){
 	        			this.autoBool = true;
-	        			this.startGame = true;
+	        			this.transitions = false;
+	        			this.timeBool = true;
 	        			for(var key in this.cards){
 		        			var card = this.cards[key];
 		        			card.animationTime = 0;
@@ -200,7 +203,6 @@ window.onload = function() {
 			},
 			getRect:function(el){
 				var parent = el.offsetParent;
-				//console.log(parent,)
 				var parentLeft = 0;
 				var parentTop = 0;
 				while (parent&&parent!==this.$el) {
@@ -223,8 +225,8 @@ window.onload = function() {
         		var currentTime = Date.now();
 			    var time = (currentTime - this.currentlyTime);
 			    this.currentlyTime = currentTime;
-			    if(!this.pause){
-				    if(this.startGame){
+			    if(!this.pause){        		
+				    if(this.timeBool){
 	        			this.time += time;
 				    }
 		    		this.putCardForeach(function(cardIndex, type, index, order){
@@ -264,7 +266,7 @@ window.onload = function() {
 	        	return (freeblank+1)*(baseblank+1)+baseblank*(baseblank-1)/2;
 	        },   	
         	mousedown:function(e){
-        		if(!this.startGame||this.autoBool||this.pause){
+        		if(this.transitions||this.autoBool||this.pause||!this.timeBool){
         			return;
         		}
         		var target = e.target || e.srcElement;
@@ -438,8 +440,7 @@ window.onload = function() {
         				index:dropIndex,
         				len:dragTargetLength,
         				score:score
-        			});        			
-        			//console.log(this.step);        			
+        			});        			       			
 			    	this.adjust(oldType,oldIndex,dropType,dropIndex);
         		}	        		
 		    	for(var key in this.dragTargetArray){
@@ -535,7 +536,8 @@ window.onload = function() {
         			}
         		}
         		if(complete===4){
-        			this.pause = true;
+        			this.transitions = true;
+        			this.timeBool = false;
         			this.page = "complete";
         			return;
         		}
@@ -700,7 +702,7 @@ window.onload = function() {
 		    	return true;
 		    },				    
 		    card_mousedown:function(e,item,type,index,order){
-        		if(!this.startGame||this.autoBool||this.pause){
+        		if(this.transitions||this.autoBool||this.pause||!this.timeBool){
         			return;
         		}
 		    	if (e.button && e.button !== 0) {
@@ -722,10 +724,18 @@ window.onload = function() {
 			    return {x:rect.left,y:rect.top};		    						    	
 		    },
 		    cardStyle:function(item,type,index,order){
+		    	var z = 0;
+		    	if(type=='sort'){
+		    		z = (item.animation?100:0)+order;
+		    	}else if(type=='free'){		    		
+		    		z = (item.animation?100:0)+order;
+		    	}else if(type=='base'){		    		
+		    		z = (this.transitions&&item.animation)?((7-order)*100):((item.animation?100:0)+order);
+		    	}
 				return {
 					left:item.pos.x+'px',
 					top:item.pos.y+'px',
-					zIndex:(!this.startGame&&item.animation)?((7-order)*100):((type=='sort'||type=='free'?100:0)+(item.animation?100:0)+order),
+					zIndex:z,
 					width:this.cardWidth+'px',
 					height:this.cardHeight+'px',
 					backgroundImage: 'url('+'img/'+item.imgSrc+')'
@@ -749,7 +759,6 @@ window.onload = function() {
 						var order = this.putCard[temp.type][temp.index].length - temp.len;
 						var data = this.spliceData(temp.type, temp.index, temp.oldType, temp.oldIndex, temp.len);
 						this.adjust(temp.type, temp.index,temp.oldType, temp.oldIndex);
-						//console.log(this.cards[data[0]].score,temp.score);
 						this.cards[data[0]].score = temp.score;
 						for(var key in data){
 							var card = this.cards[data[key]];
@@ -778,7 +787,6 @@ window.onload = function() {
 	    computed:{
 			showTime:function(){
 				var time = Math.floor(this.time/1000);
-				//console.log(this.time)
 				var m = Math.floor(time/60);
 				var s = time%60;
 				return m+":"+(s<10?"0":"")+s;

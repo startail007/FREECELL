@@ -76,7 +76,7 @@
 						</div>
 					</div>  
 		        </div>  
-		        <div class="cardBox" @mousedown="mousedown" v-if="page===''">
+		        <div class="cardBox" @mousedown="mousedown" v-if="page===''||page==='complete'">
 		        	<template v-for="(putCardType,type) in putCard">
 		        		<template v-for="(putCardChild,index) in putCardType">
 		        			<template v-for="(cardNum,order) in putCardChild">
@@ -120,14 +120,14 @@
 		        </div>
 		        <div class="title">
 		        	<div class="titleText">Freecell</div>
-		        	<div class="displayInfo" v-if="startGame">
+		        	<div class="displayInfo" v-if="!transitions">
 						<div class="score">{{score}}</div>
 						<div class="Diamond">
 							<img class="icon" src="img/Diamond.svg" />
 						</div>
 						<div class="time">{{showTime}}</div>
 					</div>
-		        	<div class="buttons" v-if="startGame">
+		        	<div class="buttons" v-if="!transitions">
 			        	<div class="button box" v-if="page===''" @click="back_click" id="button_Back" title="上一步"></div>
 			        	<div class="button box" v-if="page===''" @click="menu_click" id="button_Menu" title="選單"></div>
 		        		<div class="button box" v-if="page==='menu'" @click="close_click" id="button_Close" title="關閉"></div>
