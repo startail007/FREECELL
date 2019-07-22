@@ -392,6 +392,8 @@ window.onload = function() {
 	            		change = true;
 			        }
         		}
+        		this.dragX = 0;
+        		this.dragY = 0;	
 
         		/*切換成卡片動畫移動*/	
         		if(change){       
@@ -443,9 +445,9 @@ window.onload = function() {
 		            	this.draggingBool = true;
 		            }
 	            }
-	            /*if(!this.draggingBool){
+	            if(!this.draggingBool){
 	            	return;
-	            }*/
+	            }
 
 	            var dragTarget = this.dragTargetArray[0];	
 	        	var oldType = this.dragType;
