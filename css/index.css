@@ -394,10 +394,10 @@ body{
 	background-image: url(../img/Close.svg);
 }
 #button_Close{
-	position: absolute;
+	/*position: absolute;
 	display: block;
 	right: 10px;
-	top: 10px;
+	top: 10px;*/
 }
 .menuButtons{
 	position: relative;
