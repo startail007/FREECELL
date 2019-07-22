@@ -465,7 +465,7 @@ window.onload = function() {
 		    		}
 		    		this.putRect = {left:temp.left,top:temp.top,width:this.cardWidth,height:this.cardHeight};
 		        }
-		        
+
 		    	for(var key in this.dragTargetArray){				    		
 			    	var card = this.dragTargetArray[key];    				
 		    		card.targetPos.x = card.currentlyPos.x + this.dragX;
@@ -473,8 +473,8 @@ window.onload = function() {
 		    	}
         	},
         	getPutData:function(dragTarget,oldType,oldIndex,dragTargetLength){
+
         		/*取得放置區域*/
-	            //this.putRect = null;
 				var dragTargetRect = {
 		    		left:dragTarget.pos.x,
 		    		top:dragTarget.pos.y,
@@ -496,20 +496,10 @@ window.onload = function() {
 					return b.area - a.area;
 				});
 
-
-        		/*變更放置資料*/			        		
+        		/*判斷放置資料*/			        		
         		for(var key in collisionArray){
         			var collision = collisionArray[key];
 			    	if(this.hasSpliceRange(oldType, oldIndex, collision.type, collision.index,dragTargetLength)){
-			    		/*var temp;
-			    		if(collision.type==="base"){
-			    			var len = Math.max(0,this.putCard[collision.type][collision.index].length-1);
-			    			temp = this.getPutBoxPos(collision.type,collision.index,len);
-			    		}else{
-			    			temp = this.collisionRect[collision.type][collision.index];
-			    		}
-			    		this.putRect = {left:temp.left,top:temp.top,width:this.cardWidth,height:this.cardHeight};
-				    	break;*/
 				    	return {type:collision.type,index:collision.index}
 			    	}
 		        }
