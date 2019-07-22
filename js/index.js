@@ -443,9 +443,9 @@ window.onload = function() {
 		            	this.draggingBool = true;
 		            }
 	            }
-	            if(!this.draggingBool){
+	            /*if(!this.draggingBool){
 	            	return;
-	            }
+	            }*/
 
 	            var dragTarget = this.dragTargetArray[0];	
 	        	var oldType = this.dragType;
