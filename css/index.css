@@ -57,7 +57,7 @@ body{
 	top: 0px;
 	-webkit-filter: drop-shadow(8px 8px 10px #000); /* Safari */
 	filter: drop-shadow(8px 8px 10px #000);
-	z-index: 2;
+	z-index: 999;
 }
 .draggingBox .card{
 	
@@ -244,7 +244,7 @@ body{
     line-height: 50px;
     padding: 0px 10px;
 	box-sizing: border-box;
-	z-index: 4;
+	z-index: 3;
 }
 .titleText{
 	font-size: 20px;
@@ -317,7 +317,7 @@ body{
     box-sizing: border-box;
     border-bottom: 1px solid #ffac4e;
     border-radius: 0px 0px 40px 40px;
-    z-index: 3;
+    z-index: 2;
 }
 .complete{
 	position: absolute;
@@ -333,7 +333,7 @@ body{
     width: 400px;
     margin-left: -200px;
     padding: 20px;
-    z-index: 3;
+    z-index: 2;
 }
 .menuButtons .button{
 	padding: 20px;
