@@ -310,44 +310,36 @@ body{
 	position: absolute;
 	display: block;
 	width: 100%;
-	height: 100%;
 	background-color: #0a141d;
 	left: 0px;
 	top: 0px;
-	z-index: 3;
-}
-.menu .menuButtons{
-    padding-bottom: 80px;
-}
-.menu .menuButtonsContent{
+    bottom: 80px;
+    box-sizing: border-box;
     border-bottom: 1px solid #ffac4e;
     border-radius: 0px 0px 40px 40px;
+    z-index: 3;
 }
 .complete{
 	position: absolute;
 	display: block;
 	width: 100%;
-	height: 100%;
 	background-color: #0a141d;
-	left: 0px;
-	top: 0px;
-	z-index: 3;
+	left: 50%;
+	bottom: 0px;
+    box-sizing: border-box;
+    border: 1px solid #ffac4e;    
+    border-bottom: 0;
+    border-radius: 40px 40px 0px 0px;
+    width: 400px;
+    margin-left: -200px;
+    padding: 20px;
+    z-index: 3;
 }
 .menuButtons .button{
 	padding: 20px;
 	font-size: 30px;
 	letter-spacing: 0.05em;
 	max-width: 300px;
-}
-.complete .menuButtons{
-    padding-top: 380px;
-    max-width: 400px;
-    margin: 0 auto;
-}
-.complete .menuButtonsContent{
-    border: 1px solid #ffac4e;    
-    border-bottom: 0;
-    border-radius: 40px 40px 0px 0px;
 }
 .complete .score{
 	display: block;
