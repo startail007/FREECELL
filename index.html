@@ -88,6 +88,9 @@
 		        	<!--<div class="card" :class=[type[item.type].icon] v-for="(item) in cards" :key="item.type+'_'+item.num" :style="cardStyle(item)" @mousedown="function(e){card_mousedown(e,item)}" v-if="!item.dragging">
 					</div>-->
 		        </div>
+		        <div class="putRectBox" v-if="dragStartBool">
+			        <div class="putRect" :style="putRectStyle" v-if="putRect"></div>
+		        </div>
 		        <div class="draggingBox" v-if="dragStartBool">
 		        	<div class="card" :class=[type[item.type].icon] v-for="(item,index) in dragTargetArray" :key="item.type+'_'+item.num" :style="cardDragStyle(item,index)">
 			        </div>
@@ -128,7 +131,7 @@
 						<div class="time">{{showTime}}</div>
 					</div>
 		        	<div class="buttons" v-if="!transitions">
-			        	<div class="button box" v-if="page===''" @click="back_click" id="button_Back" title="上一步"></div>
+			        	<div class="button box" v-if="page===''&&step.length>1" @click="back_click" id="button_Back" title="上一步"></div>
 			        	<div class="button box" v-if="page===''" @click="menu_click" id="button_Menu" title="選單"></div>
 		        		<div class="button box" v-if="page==='menu'" @click="close_click" id="button_Close" title="關閉"></div>
 			        </div>

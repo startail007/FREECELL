@@ -37,6 +37,14 @@ body{
 }
 .card:hover{
 }
+.putRect{	
+	position: absolute;
+	display: block;
+	border:5px solid #ffac4e;
+    border-radius: 10px;
+	box-sizing: border-box;
+	box-shadow:0px 0px 10px #ffac4e;
+}
 .cardBox{
 	position: absolute;
 	display: block;
@@ -45,6 +53,15 @@ body{
 	left: 0px;
 	top: 0px;
 	z-index: 1;
+}
+.putRectBox{
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	z-index: 2;
 }
 .draggingBox{
 	position: absolute;
@@ -112,13 +129,13 @@ body{
 .putBox.free .put{
 	background-repeat: no-repeat;
 	background-position: center top;
-	background-size: 104% auto;	
+	background-size: 107% auto;	
 	background-image: url(../img/cardBg.png);
 }
 .putBox.sort .put{
 	background-repeat: no-repeat;
 	background-position: center top;
-	background-size: 104% auto;	
+	background-size: 107% auto;	
 	background-image: url(../img/cardBg.png);
 	font-size: 40px;
 	color: #545b61;
@@ -244,7 +261,7 @@ body{
     line-height: 50px;
     padding: 0px 10px;
 	box-sizing: border-box;
-	z-index: 3;
+	z-index: 4;
 }
 .titleText{
 	font-size: 20px;
@@ -317,7 +334,7 @@ body{
     box-sizing: border-box;
     border-bottom: 1px solid #ffac4e;
     border-radius: 0px 0px 40px 40px;
-    z-index: 2;
+    z-index: 3;
 }
 .complete{
 	position: absolute;
@@ -333,7 +350,7 @@ body{
     width: 400px;
     margin-left: -200px;
     padding: 20px;
-    z-index: 2;
+    z-index: 3;
 }
 .menuButtons .button{
 	padding: 20px;

@@ -37,7 +37,7 @@ window.onload = function() {
         	currentlyTime:0,	        	
         	dragTargetArray:[],
         	cardWidth:120,
-        	cardHeight:180,
+        	cardHeight:185,
         	autoId:0,
         	autoBool:false,
         	transitions:false,
@@ -53,6 +53,7 @@ window.onload = function() {
         	pause:false,
         	page:"",
         	random:[],
+        	putRect:null
         },
         mounted: function() {
     		for(var collisionRect_key in this.collisionRect){
@@ -327,18 +328,18 @@ window.onload = function() {
 			    /*啟動卡片拖曳*/					    
 			    clearTimeout(this.autoId);
 			    var pos = this.getPutBoxPos(this.dragType,this.dragIndex,this.dragOrder);
-	            var xx = dragTarget.pos.x - pos.x;
-	            var yy = dragTarget.pos.y - pos.y;
+	            var xx = dragTarget.pos.x - pos.left;
+	            var yy = dragTarget.pos.y - pos.top;
 
 			    for(var key in this.dragTargetArray){
 			    	var card = this.dragTargetArray[key];
 			    	card.dragging = true;
 			    	card.animation = true;
 			    	var pos = this.getPutBoxPos(this.dragType,this.dragIndex,this.dragOrder + parseInt(key));
-			    	card.targetPos.x = pos.x + xx;
-		    		card.targetPos.y = pos.y + yy;
-		    		card.currentlyPos.x = pos.x + xx;
-		    		card.currentlyPos.y = pos.y + yy;
+			    	card.targetPos.x = pos.left + xx;
+		    		card.targetPos.y = pos.top + yy;
+		    		card.currentlyPos.x = pos.left + xx;
+		    		card.currentlyPos.y = pos.top + yy;
 		    		card.animationDelayOffset = 0;
 		    		card.animationTime = 0;
 			    }	
@@ -357,6 +358,7 @@ window.onload = function() {
         			return;
 	            }
 
+	            this.putRect = null;
 	            this.dragStartBool = false;
         		this.draggingBool = false;
         		document.documentElement.removeEventListener('mousemove', this.mousemove);
@@ -380,40 +382,14 @@ window.onload = function() {
 		            }
 
 	            }else if(Math.abs(this.dragX)>10||Math.abs(this.dragY)>10){
-
-	        		/*取得放置區域*/
-					var dragTargetRect = {
-			    		left:dragTarget.pos.x,
-			    		top:dragTarget.pos.y,
-			    		right:dragTarget.pos.x + this.cardWidth,
-			    		bottom:dragTarget.pos.y + this.cardHeight,
-			    	};
-			    	var collisionArray = [];
-		    		this.collisionRectForeach(function(rect, type, index){
-		    			var temp = this.checkAABBCollision(rect,dragTargetRect);
-	        			if(temp){
-	        				collisionArray.push({
-	        					type:type,
-	        					index:index,
-	        					area:(temp.right-temp.left)*(temp.bottom-temp.top)
-	        				});
-	        			}
-		    		});
-		    		collisionArray.sort(function(a, b) {
-						return b.area - a.area;
-					});
-
-
-	        		/*變更放置資料*/			        		
-	        		for(var key in collisionArray){
-	        			var collision = collisionArray[key];
-				    	if(this.hasSpliceRange(oldType, oldIndex, collision.type, collision.index,dragTargetLength)){
-				    		this.spliceData(oldType, oldIndex, collision.type, collision.index,dragTargetLength);	        			
-			            	dropType = collision.type;
-			            	dropIndex = collision.index;
-		            		change = true;					    		
-					    	break;
-				    	}
+	        		
+	        		/*可放置位置*/
+			        var putData = this.getPutData(dragTarget,oldType,oldIndex,dragTargetLength)
+			        if(putData){	        			
+		            	dropType = putData.type;
+		            	dropIndex = putData.index;
+			        	this.spliceData(oldType, oldIndex, putData.type, putData.index,dragTargetLength);
+	            		change = true;
 			        }
         		}
 
@@ -467,11 +443,76 @@ window.onload = function() {
 		            	this.draggingBool = true;
 		            }
 	            }
+	            if(!this.draggingBool){
+	            	return;
+	            }
+
+	            var dragTarget = this.dragTargetArray[0];	
+	        	var oldType = this.dragType;
+	        	var oldIndex = this.dragIndex;
+	        	var dragTargetLength = this.dragTargetArray.length;
+
+	            this.putRect = null;
+
+		        var putData = this.getPutData(dragTarget,oldType,oldIndex,dragTargetLength)
+		        if(putData){
+		        	var temp;
+		        	if(putData.type==="base"){
+		    			var len = Math.max(0,this.putCard[putData.type][putData.index].length-1);
+		    			temp = this.getPutBoxPos(putData.type,putData.index,len);
+		    		}else{
+		    			temp = this.collisionRect[putData.type][putData.index];
+		    		}
+		    		this.putRect = {left:temp.left,top:temp.top,width:this.cardWidth,height:this.cardHeight};
+		        }
+		        
 		    	for(var key in this.dragTargetArray){				    		
 			    	var card = this.dragTargetArray[key];    				
 		    		card.targetPos.x = card.currentlyPos.x + this.dragX;
 		    		card.targetPos.y = card.currentlyPos.y + this.dragY;
 		    	}
+        	},
+        	getPutData:function(dragTarget,oldType,oldIndex,dragTargetLength){
+        		/*取得放置區域*/
+	            //this.putRect = null;
+				var dragTargetRect = {
+		    		left:dragTarget.pos.x,
+		    		top:dragTarget.pos.y,
+		    		right:dragTarget.pos.x + this.cardWidth,
+		    		bottom:dragTarget.pos.y + this.cardHeight,
+		    	};
+		    	var collisionArray = [];
+	    		this.collisionRectForeach(function(rect, type, index){
+	    			var temp = this.checkAABBCollision(rect,dragTargetRect);
+        			if(temp){
+        				collisionArray.push({
+        					type:type,
+        					index:index,
+        					area:(temp.right-temp.left)*(temp.bottom-temp.top)
+        				});
+        			}
+	    		});
+	    		collisionArray.sort(function(a, b) {
+					return b.area - a.area;
+				});
+
+
+        		/*變更放置資料*/			        		
+        		for(var key in collisionArray){
+        			var collision = collisionArray[key];
+			    	if(this.hasSpliceRange(oldType, oldIndex, collision.type, collision.index,dragTargetLength)){
+			    		/*var temp;
+			    		if(collision.type==="base"){
+			    			var len = Math.max(0,this.putCard[collision.type][collision.index].length-1);
+			    			temp = this.getPutBoxPos(collision.type,collision.index,len);
+			    		}else{
+			    			temp = this.collisionRect[collision.type][collision.index];
+			    		}
+			    		this.putRect = {left:temp.left,top:temp.top,width:this.cardWidth,height:this.cardHeight};
+				    	break;*/
+				    	return {type:collision.type,index:collision.index}
+			    	}
+		        }
         	},
         	collisionRectForeach:function(fun){
         		for(var collisionRect_key in this.collisionRect){
@@ -496,8 +537,8 @@ window.onload = function() {
         		card.currentlyPos.x = card.pos.x;
     			card.currentlyPos.y = card.pos.y;
 				var pos = this.getPutBoxPos(type,index,key);
-	    		card.targetPos.x = pos.x;
-	    		card.targetPos.y = pos.y;
+	    		card.targetPos.x = pos.left;
+	    		card.targetPos.y = pos.top;
     			card.dragging = false;
     			card.animationTime = 0;
 		    	card.animationDelayOffset = animationDelayOffset;
@@ -715,22 +756,22 @@ window.onload = function() {
 		    getPutBoxPos:function(type, index, order){
     			var rect = this.collisionRect[type][index];
     			if(type==="base"){
-    				var count = Math.max(8,this.putCard[type][index].length)-1;
+    				var count = Math.max(10,this.putCard[type][index].length)-1;
     				if(count>0){			    					
     					count = 1/count;
     				}
-    				return {x:rect.left,y:order*(rect.bottom-rect.top-this.cardHeight)*count+rect.top};
+    				return {left:rect.left,top:order*(rect.bottom-rect.top-this.cardHeight)*count+rect.top};
     			}		    		
-			    return {x:rect.left,y:rect.top};		    						    	
+			    return {left:rect.left,top:rect.top};		    						    	
 		    },
 		    cardStyle:function(item,type,index,order){
 		    	var z = 0;
 		    	if(type=='sort'){
-		    		z = (item.animation?100:0)+order;
+		    		z = (item.animation?200:0)+order;
 		    	}else if(type=='free'){		    		
-		    		z = (item.animation?100:0)+order;
+		    		z = (item.animation?200:0)+order;
 		    	}else if(type=='base'){		    		
-		    		z = (this.transitions&&item.animation)?((7-order)*100):((item.animation?100:0)+order);
+		    		z = (this.transitions&&item.animation)?((this.putCard[type][index].length-order)*100):((item.animation?100:0)+order);
 		    	}
 				return {
 					left:item.pos.x+'px',
@@ -797,6 +838,17 @@ window.onload = function() {
 			    	score+=this.cards[key].score;
 			    }
 				return score;
+			},
+			putRectStyle:function(){
+				if(!this.putRect){
+					return null;
+				}
+				return {
+					left:this.putRect.left+'px',
+					top:this.putRect.top+'px',
+					width:this.putRect.width+'px',
+					height:this.putRect.height+'px'
+				}
 			}
 		}
     });
