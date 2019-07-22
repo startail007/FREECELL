@@ -681,7 +681,7 @@ window.onload = function() {
 		    		return false;				    	
         		}
 	    		if(type==="base"&&len00<=0){
-	    			if(len00>this.getMoveMax(this.freeblank,this.baseblank-1)){
+	    			if(len>this.getMoveMax(this.freeblank,this.baseblank-1)){
 	    				return false;
 	    			}
         		}
