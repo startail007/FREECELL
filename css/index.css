@@ -5,6 +5,7 @@
 body{
 	margin:0;
     background-color: #777;
+    background-color: #0a141d;
 	font-family: 'Oleo Script', cursive, sans-serif;
 }
 .mainAPP{
@@ -185,8 +186,9 @@ body{
 	overflow: hidden;
 	background-color: #0a141d;
 	width: 1200px;
-	height: 800px;
+	height: 100%;
     margin:0 auto;
+    min-height: 800px;
 }
 .content{
 	position: relative;
