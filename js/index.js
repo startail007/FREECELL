@@ -56,12 +56,9 @@ window.onload = function() {
         	putRect:null
         },
         mounted: function() {
-    		for(var collisionRect_key in this.collisionRect){
-        		var collisions = this.$refs["collision_"+collisionRect_key];
-        		for(var key in collisions){
-	    			this.collisionRect[collisionRect_key][key] = this.getRect(collisions[key]);
-	    		}
-    		}
+    		
+        	this.setCollisionRect();
+        	window.addEventListener("resize", this.resize);
 
         	for(var type_key in this.type){
 				for(var i=0;i<13;i++){
@@ -173,6 +170,33 @@ window.onload = function() {
 		        		}
 				    	this.autoMove();
 				    }.bind(this),(30*8*6 + 30*7)+400);
+        	},
+        	resize:function(){
+        		this.setCollisionRect();
+        		var putCard = this.putCard["base"];
+
+	        	var startPutRect = this.getRect(this.$refs.startPut);
+	        	for(var i=0;i<putCard.length;i++){
+	        		for(var j=0;j<putCard[i].length;j++){
+	        			var index = putCard[i][j];
+	        			var card = this.cards[index];
+	        			if(card.animation){
+	        				var pos = this.getPutBoxPos("base",i,j);
+					    	card.targetPos.x = pos.left;
+				    		card.targetPos.y = pos.top;
+	        			}else{
+							this.setCardAnimation(card,"base",i,j,0);
+	        			}
+	        		}
+	        	}
+        	},
+        	setCollisionRect:function(){
+        		for(var collisionRect_key in this.collisionRect){
+	        		var collisions = this.$refs["collision_"+collisionRect_key];
+	        		for(var key in collisions){
+		    			this.collisionRect[collisionRect_key][key] = this.getRect(collisions[key]);
+		    		}
+	    		}
         	},
         	getRandom:function(){
         		var random = [];
@@ -749,10 +773,11 @@ window.onload = function() {
     			var rect = this.collisionRect[type][index];
     			if(type==="base"){
     				var count = Math.max(10,this.putCard[type][index].length)-1;
-    				if(count>0){			    					
-    					count = 1/count;
+    				var h = 0;
+    				if(count>0){
+    					h = Math.min(this.cardHeight/3,(rect.bottom-rect.top-this.cardHeight)/count);
     				}
-    				return {left:rect.left,top:order*(rect.bottom-rect.top-this.cardHeight)*count+rect.top};
+    				return {left:rect.left,top:order*h+rect.top};
     			}		    		
 			    return {left:rect.left,top:rect.top};		    						    	
 		    },
