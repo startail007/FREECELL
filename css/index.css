@@ -191,7 +191,7 @@ body{
     min-height: 800px;
 }
 .content{
-	position: relative;
+	position: absolute;
 	display: block;
 	/*margin: 0px 100px;*/
 	width: 100%;
